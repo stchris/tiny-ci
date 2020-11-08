@@ -1,0 +1,9 @@
+#!/bin/bash
+while read -r _ newrev ref
+do
+	id=$(uuid)
+	echo "Starting CI job $id"
+	redis-cli hset "$id" rev "$newrev" >/dev/null
+	redis-cli hset "$id" ref "$ref" >/dev/null
+	redis-cli lpush jobs "$id" >/dev/null
+done
